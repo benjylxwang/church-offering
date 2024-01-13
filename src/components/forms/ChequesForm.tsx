@@ -1,44 +1,42 @@
-import { Control, UseFormWatch, useFieldArray } from "react-hook-form";
-import { Offering } from "../../types/offering";
 import {
   Accordion,
-  AccordionSummary,
-  Typography,
   AccordionDetails,
-  Stack,
+  AccordionSummary,
   Button,
+  Stack,
+  Typography,
 } from "@mui/material";
+import { Control, UseFormWatch, useFieldArray } from "react-hook-form";
+import { Offering } from "../../types/offering";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useMemo, useState } from "react";
 import { formatter } from "../../helpers/currency-formatter";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import EnvelopeField from "../form-elements/EnvelopeField";
+import ChequeField from "../form-elements/ChequeField";
 
-type Props = {
-  control: Control<Offering>;
-  watch: UseFormWatch<Offering>;
-  defaultOpen?: boolean;
-};
-
-export const calculateTotalEnvelopes = (
-  envelopes: Offering["envelopes"]
-): number => {
+export const calculateTotalCheques = (cheques: Offering["cheques"]): number => {
   let total = 0;
-  envelopes.forEach((envelope) => {
-    total += Number(envelope.cashAmount) + Number(envelope.chequeAmount);
+  cheques.forEach((cheque) => {
+    total += Number(cheque.amount);
   });
   return total;
 };
 
-function EnvelopesForm({ control, watch, defaultOpen }: Props) {
-  const envelopeWatch = watch("envelopes");
-  const totalEnvelopes = useMemo(() => {
-    const total = calculateTotalEnvelopes(envelopeWatch);
+type Props = {
+  defaultOpen?: boolean;
+  control: Control<Offering>;
+  watch: UseFormWatch<Offering>;
+};
+
+export const ChequesForm = ({ defaultOpen, control, watch }: Props) => {
+  const cheques = watch("cheques");
+  const totalCheques = useMemo(() => {
+    const total = calculateTotalCheques(cheques);
     return formatter.format(total);
-  }, [envelopeWatch]);
+  }, [cheques]);
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "envelopes",
+    name: "cheques",
   });
   const [expanded, setExpanded] = useState(defaultOpen ?? false);
 
@@ -49,13 +47,13 @@ function EnvelopesForm({ control, watch, defaultOpen }: Props) {
       onChange={() => setExpanded((old) => !old)}
     >
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-        <Typography variant="h5">Envelopes: {totalEnvelopes}</Typography>
+        <Typography variant="h5">Cheques: {totalCheques}</Typography>
       </AccordionSummary>
       <AccordionDetails>
         <Stack gap={2}>
           <Stack gap={2}>
             {fields.map((field, index) => (
-              <EnvelopeField
+              <ChequeField
                 key={field.id}
                 control={control}
                 index={index}
@@ -64,19 +62,17 @@ function EnvelopesForm({ control, watch, defaultOpen }: Props) {
             ))}
             <Button
               variant="outlined"
-              onClick={() =>
-                append({ number: "", chequeAmount: "", cashAmount: "" })
-              }
+              onClick={() => append({ name: "", amount: "" })}
             >
               Add
             </Button>
           </Stack>
-          <Stack direction="row">
+          <Stack direction="row" gap={2}>
             <Typography variant="caption" flex={1}>
-              Add the amounts in any envelopes above
+              Add the name and value of any cheques above
             </Typography>
             <Typography variant="h5" textAlign="right">
-              Total: {totalEnvelopes}
+              Total: {totalCheques}
             </Typography>
           </Stack>
           <Button onClick={() => setExpanded(false)}>Close</Button>
@@ -84,6 +80,4 @@ function EnvelopesForm({ control, watch, defaultOpen }: Props) {
       </AccordionDetails>
     </Accordion>
   );
-}
-
-export default EnvelopesForm;
+};

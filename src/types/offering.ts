@@ -1,20 +1,29 @@
+import { Dayjs } from "dayjs";
+
 export type Offering = {
-  date: Date;
+  date: Dayjs;
   service: "Morning" | "Evening" | string;
+  otherServiceName?: string;
   specialOffering: string;
-  generalOffering: GeneralOffering;
+  cash: {
+    [name in CashNotes]: Currency;
+  };
+  cheques: Cheque[];
   envelopes: Envelope[];
+  otherDetails: string;
 };
+
+export type Currency = string;
 
 export type Envelope = {
   number: string;
-  cashAmount: number;
-  chequeAmount: number;
+  cashAmount: Currency;
+  chequeAmount: Currency;
 };
 
 export type Cheque = {
   name: string;
-  amount: number;
+  amount: Currency;
 };
 
 export enum CashNotes {
@@ -45,11 +54,4 @@ export const CashValues = {
   [CashNotes.FIVE_PENCE]: 0.05,
   [CashNotes.TWO_PENCE]: 0.02,
   [CashNotes.ONE_PENCE]: 0.01,
-}
-
-export type GeneralOffering = {
-  cash: {
-    [name in CashNotes]: number;
-  };
-  cheques: Cheque[];
 };

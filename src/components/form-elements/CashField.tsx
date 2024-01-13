@@ -1,11 +1,12 @@
 import { Stack, TextField, Typography } from "@mui/material";
 import { Control, Controller, UseFormWatch } from "react-hook-form";
-import { CashNotes, CashValues, GeneralOffering } from "../../types/offering";
+import { CashNotes, CashValues, Offering } from "../../types/offering";
+import { NumericFormat } from "react-number-format";
 
 type Props = {
-  control: Control<GeneralOffering>;
+  control: Control<Offering>;
   name: CashNotes;
-  watch: UseFormWatch<GeneralOffering>;
+  watch: UseFormWatch<Offering>;
   required?: boolean;
 };
 
@@ -16,16 +17,26 @@ function CashField({ control, required, name, watch }: Props) {
     currency: "GBP",
   });
   return (
-    <Stack direction="row">
+    <Stack direction="row" alignItems="center" gap={4}>
       <Controller
         control={control}
         name={`cash.${name}`}
-        rules={{ required }}
-        render={({ field }) => (
-          <TextField type="number" label={name} {...field} />
+        rules={{ required, min: 0 }}
+        render={({ field: { ref, ...field } }) => (
+          <NumericFormat
+            customInput={TextField}
+            label={name}
+            decimalScale={0}
+            type="tel"
+            {...field}
+            inputRef={ref}
+            required={required}
+          />
         )}
       />
-      <Typography>{formatter.format(value * CashValues[name])}</Typography>
+      <Typography sx={{ minWidth: 100 }}>
+        {formatter.format(value * CashValues[name])}
+      </Typography>
     </Stack>
   );
 }
