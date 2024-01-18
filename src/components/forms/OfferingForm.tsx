@@ -8,14 +8,18 @@ import {
 import { CashNotes, Offering } from "../../types/offering";
 import { CashForm } from "./CashForm";
 import { ChequesForm } from "./ChequesForm";
-import { TotalsCard } from "../form-elements/TotalCard";
+import { ToPayInForm } from "../form-elements/ToPayInForm";
 import ServiceForm from "./ServiceForm";
 import dayjs from "dayjs";
 import EnvelopesForm from "./EnvelopesForm";
 import { WitnessForm } from "./WitnessForm";
+import {
+  offeringToEmailBody,
+  offeringToEmailSubject,
+} from "../../helpers/offering-to-email";
 
 function OfferingForm() {
-  const { control, handleSubmit, watch, register, unregister } =
+  const { control, handleSubmit, watch, register, unregister, setValue } =
     useForm<Offering>({
       defaultValues: {
         date: dayjs(),
@@ -29,13 +33,19 @@ function OfferingForm() {
         cheques: [],
         envelopes: [],
         otherDetails: "",
+        paidInBy: "",
+        witness1: "",
+        witness2: "",
       },
       mode: "onBlur",
     });
 
   const onSubmit: SubmitHandler<Offering> = (data) => {
-    console.log("Submitted");
-    console.log(data);
+    const subject = offeringToEmailSubject(data);
+    const body = encodeURIComponent(offeringToEmailBody(data));
+    window.open(
+      `mailto:treasurer@standrewsbaptist.org.uk?subject=${subject}&body=${body}`
+    );
   };
 
   const onInvalid: SubmitErrorHandler<Offering> = (errors) => {
@@ -43,10 +53,8 @@ function OfferingForm() {
     console.log(errors);
   };
 
-  const offering = watch();
-
   return (
-    <form onSubmit={handleSubmit(onSubmit, onInvalid)} noValidate>
+    <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
       <Stack gap={2}>
         <ServiceForm
           control={control}
@@ -72,11 +80,23 @@ function OfferingForm() {
             />
           )}
         />
-        <TotalsCard offering={offering} />
-        <WitnessForm label="Witness 1" />
-        <WitnessForm label="Witness 2" />
+        <ToPayInForm control={control} watch={watch} />
+        <WitnessForm
+          label="Witness 1"
+          control={control}
+          name="witness1"
+          watch={watch}
+          setValue={setValue}
+        />
+        <WitnessForm
+          label="Witness 2"
+          control={control}
+          name="witness2"
+          watch={watch}
+          setValue={setValue}
+        />
         <Button variant="contained" type="submit">
-          Submit
+          Send to treasurer
         </Button>
       </Stack>
     </form>

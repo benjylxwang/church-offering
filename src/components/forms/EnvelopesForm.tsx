@@ -7,6 +7,7 @@ import {
   AccordionDetails,
   Stack,
   Button,
+  Divider,
 } from "@mui/material";
 import { useMemo, useState } from "react";
 import { formatter } from "../../helpers/currency-formatter";
@@ -20,21 +21,28 @@ type Props = {
 };
 
 export const calculateTotalEnvelopes = (
-  envelopes: Offering["envelopes"]
+  envelopes: Offering["envelopes"],
+  type?: "cash" | "cheque"
 ): number => {
   let total = 0;
   envelopes.forEach((envelope) => {
-    total += Number(envelope.cashAmount) + Number(envelope.chequeAmount);
+    if (type === "cash") {
+      total += Number(envelope.cashAmount);
+    } else if (type === "cheque") {
+      total += Number(envelope.chequeAmount);
+    } else {
+      total += Number(envelope.cashAmount) + Number(envelope.chequeAmount);
+    }
   });
   return total;
 };
 
 function EnvelopesForm({ control, watch, defaultOpen }: Props) {
-  const envelopeWatch = watch("envelopes");
+  const offering = watch();
   const totalEnvelopes = useMemo(() => {
-    const total = calculateTotalEnvelopes(envelopeWatch);
+    const total = calculateTotalEnvelopes(offering.envelopes);
     return formatter.format(total);
-  }, [envelopeWatch]);
+  }, [offering]);
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -55,12 +63,15 @@ function EnvelopesForm({ control, watch, defaultOpen }: Props) {
         <Stack gap={2}>
           <Stack gap={2}>
             {fields.map((field, index) => (
-              <EnvelopeField
-                key={field.id}
-                control={control}
-                index={index}
-                remove={remove}
-              />
+              <Stack key={field.id} gap={2}>
+                <EnvelopeField
+                  key={field.id}
+                  control={control}
+                  index={index}
+                  remove={remove}
+                />
+                {index < fields.length - 1 && <Divider />}
+              </Stack>
             ))}
             <Button
               variant="outlined"

@@ -16,16 +16,28 @@ function ChequeField({ control, index, remove }: Props) {
         name={`cheques.${index}.name`}
         control={control}
         rules={{ required: true }}
-        render={({ field }) => (
-          <TextField label="Name" sx={{ flex: 1 }} required {...field} />
+        render={({ field, fieldState: { error } }) => (
+          <TextField
+            label="Name"
+            sx={{ flex: 1, minWidth: "120px" }}
+            required
+            error={!!error}
+            {...field}
+          />
         )}
       />
       <Controller
         name={`cheques.${index}.amount`}
         control={control}
         rules={{ required: true }}
-        render={({ field }) => (
-          <CurrencyInput label="Amount" sx={{ flex: 1 }} required {...field} />
+        render={({ field, fieldState: { error } }) => (
+          <CurrencyInput
+            label="Amount"
+            sx={{ flex: 1, minWidth: "120px" }}
+            required
+            error={!!error}
+            {...field}
+          />
         )}
       />
       <Button color="error" variant="outlined" onClick={() => remove(index)}>

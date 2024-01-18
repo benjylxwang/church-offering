@@ -11,6 +11,9 @@ export type Offering = {
   cheques: Cheque[];
   envelopes: Envelope[];
   otherDetails: string;
+  paidInBy: string;
+  witness1: string;
+  witness2: string;
 };
 
 export type Currency = string;

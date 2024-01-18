@@ -1,49 +1,51 @@
+import { Button, Stack, TextField } from "@mui/material";
 import {
-  Box,
-  Button,
-  Card,
-  Dialog,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
-import { useRef, useState } from "react";
-import ReactSignatureCanvas from "react-signature-canvas";
+  Control,
+  Controller,
+  UseFormSetValue,
+  UseFormWatch,
+} from "react-hook-form";
+import { Offering } from "../../types/offering";
 
 type Props = {
   label: string;
+  name: "witness1" | "witness2";
+  control: Control<Offering>;
+  watch: UseFormWatch<Offering>;
+  setValue: UseFormSetValue<Offering>;
 };
 
-export const WitnessForm = ({ label }: Props) => {
-  const [open, setOpen] = useState(false);
-
-  const signatureRef = useRef<ReactSignatureCanvas>(null);
-
+export const WitnessForm = ({
+  label,
+  control,
+  name,
+  watch,
+  setValue,
+}: Props) => {
+  const value = watch(name);
   return (
-    <>
-      <Button variant="outlined" onClick={() => setOpen(true)}>
-        Sign {label}
+    <Stack direction="row" gap={2}>
+      <Controller
+        name={name}
+        control={control}
+        rules={{ required: true }}
+        render={({ field, fieldState: { error } }) => (
+          <TextField
+            required
+            label={label}
+            sx={{ flex: 1 }}
+            error={!!error}
+            helperText={error?.message}
+            {...field}
+          />
+        )}
+      />
+      <Button
+        disabled={value === ""}
+        onClick={() => value !== "" && setValue("paidInBy", value)}
+      >
+        Paid in?
       </Button>
-      <Dialog open={open} onClose={() => setOpen(false)}>
-        <Stack p={2} gap={2}>
-          <TextField required label="Name" />
-          <Box>
-            <Typography>Signature</Typography>
-            <Card variant="outlined">
-              <ReactSignatureCanvas
-                canvasProps={{ width: "300px", height: "150px" }}
-                ref={signatureRef}
-              />
-            </Card>
-          </Box>
-          <Stack direction="row" gap={2} justifyContent="space-between">
-            <Button onClick={() => signatureRef.current?.clear()}>Clear</Button>
-            <Button variant="outlined" onClick={() => setOpen(false)}>
-              Close
-            </Button>
-          </Stack>
-        </Stack>
-      </Dialog>
-    </>
+    </Stack>
   );
 };

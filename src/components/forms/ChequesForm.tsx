@@ -3,6 +3,7 @@ import {
   AccordionDetails,
   AccordionSummary,
   Button,
+  Divider,
   Stack,
   Typography,
 } from "@mui/material";
@@ -53,12 +54,15 @@ export const ChequesForm = ({ defaultOpen, control, watch }: Props) => {
         <Stack gap={2}>
           <Stack gap={2}>
             {fields.map((field, index) => (
-              <ChequeField
-                key={field.id}
-                control={control}
-                index={index}
-                remove={remove}
-              />
+              <Stack key={field.id} gap={2}>
+                <ChequeField
+                  key={field.id}
+                  control={control}
+                  index={index}
+                  remove={remove}
+                />
+                {index < fields.length - 1 && <Divider />}
+              </Stack>
             ))}
             <Button
               variant="outlined"
