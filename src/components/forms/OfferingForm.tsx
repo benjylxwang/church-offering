@@ -46,9 +46,8 @@ function OfferingForm() {
   const onSubmit: SubmitHandler<Offering> = (data) => {
     const subject = offeringToEmailSubject(data);
     const body = encodeURIComponent(offeringToEmailBody(data));
-    window.open(
-      `mailto:treasurer@standrewsbaptist.org.uk?subject=${subject}&body=${body}`
-    );
+    const email = `treasurer^standrewsbaptist.org.uk`.replace("^", "@");
+    window.open(`mailto:${email}?subject=${subject}&body=${body}`);
   };
 
   const [copied, setCopied] = useState(false);
