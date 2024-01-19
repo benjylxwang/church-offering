@@ -51,11 +51,12 @@ export const ToPayInForm = ({ control, watch }: Props) => {
             name="paidInBy"
             control={control}
             rules={{ required: true }}
-            render={({ field }) => (
+            render={({ field, fieldState: { error } }) => (
               <TextField
                 label="Paid in by"
                 helperText="Who has/will pay the cash into the church bank account (e.g. John Smith)"
                 required
+                error={!!error}
                 {...field}
               />
             )}

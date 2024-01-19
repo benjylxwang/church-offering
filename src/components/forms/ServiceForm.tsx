@@ -68,24 +68,26 @@ function ServiceForm({ control, watch, register, unregister }: Props) {
           rules={{ required: true }}
           render={({ field, fieldState: { error } }) => (
             <FormControl error={!!error} required {...field}>
-              <FormLabel id="demo-radio-buttons-group-label">Service</FormLabel>
+              <FormLabel id="demo-radio-buttons-group-label" required>
+                Service
+              </FormLabel>
               {error?.message && (
                 <FormHelperText>{error?.message}</FormHelperText>
               )}
               <RadioGroup row>
                 <FormControlLabel
                   value="Morning"
-                  control={<Radio />}
+                  control={<Radio required />}
                   label="Morning"
                 />
                 <FormControlLabel
                   value="Evening"
-                  control={<Radio />}
+                  control={<Radio required />}
                   label="Evening"
                 />
                 <FormControlLabel
                   value="Other"
-                  control={<Radio />}
+                  control={<Radio required />}
                   label="Other"
                 />
               </RadioGroup>

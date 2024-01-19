@@ -1,4 +1,4 @@
-import { Button, Stack, TextField } from "@mui/material";
+import { Button, Divider, Stack, TextField, Typography } from "@mui/material";
 import {
   useForm,
   SubmitHandler,
@@ -17,6 +17,9 @@ import {
   offeringToEmailBody,
   offeringToEmailSubject,
 } from "../../helpers/offering-to-email";
+import copy from "copy-to-clipboard";
+import { useState } from "react";
+import { Check } from "@mui/icons-material";
 
 function OfferingForm() {
   const { control, handleSubmit, watch, register, unregister, setValue } =
@@ -46,6 +49,13 @@ function OfferingForm() {
     window.open(
       `mailto:treasurer@standrewsbaptist.org.uk?subject=${subject}&body=${body}`
     );
+  };
+
+  const [copied, setCopied] = useState(false);
+  const onSubmitCopy: SubmitHandler<Offering> = (data) => {
+    setCopied(true);
+    copy(offeringToEmailBody(data));
+    setTimeout(() => setCopied(false), 3000);
   };
 
   const onInvalid: SubmitErrorHandler<Offering> = (errors) => {
@@ -98,6 +108,27 @@ function OfferingForm() {
         <Button variant="contained" type="submit">
           Send to treasurer
         </Button>
+        <Divider />
+        <Stack
+          direction="row"
+          gap={2}
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Typography>
+            Send not working? Click copy to copy the filled in offering sheet
+            and paste it in an email to the treasurer
+          </Typography>
+          <Button
+            variant="outlined"
+            onClick={handleSubmit(onSubmitCopy, onInvalid)}
+            disabled={copied}
+            startIcon={copied ? <Check /> : undefined}
+            sx={{ minWidth: "108px" }}
+          >
+            {copied ? "Copied" : "Copy"}
+          </Button>
+        </Stack>
       </Stack>
     </form>
   );
