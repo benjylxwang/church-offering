@@ -28,3 +28,6 @@ npm i -g serve
 npm run build
 serve -s build
 ```
+
+## Screenshot
+![image](https://github.com/benjylxwang/church-offering/assets/8894223/81baa447-7d59-4ea8-afb6-e99006e503e1)
