@@ -30,10 +30,11 @@ export const offeringToEmailBody = (offering: Offering): string => {
     }
   });
 
-  return `Summary: ${offeringToEmailSubject(offering)}${
+  return `Summary: ${offeringToEmailSubject(offering)}
+  ${
     offering.specialOffering.length > 0
-      ? `\nThis is a special offering for ${offering.specialOffering}`
-      : ""
+      ? `This is a special offering for ${offering.specialOffering}`
+      : "This is not a special offering"
   }
 
 Total General Offering: ${formatter.format(
