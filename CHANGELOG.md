@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/benjylxwang/church-offering/compare/v1.0.0...v1.0.1) (2024-03-03)
+
+
+### Bug Fixes
+
+* dependency issues ([ec5bb7e](https://github.com/benjylxwang/church-offering/commit/ec5bb7ef0e05b55b714d113f7c079c5cd8d47a85))
+
 ## 1.0.0 (2024-03-03)
 
 
