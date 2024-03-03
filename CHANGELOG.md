@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.2](https://github.com/benjylxwang/church-offering/compare/v1.0.1...v1.0.2) (2024-03-03)
+
+
+### Bug Fixes
+
+* remove header ([a9e8731](https://github.com/benjylxwang/church-offering/commit/a9e87316aa27f0675f607dc4c6ca218617635cc2))
+* top margin ([d51d56c](https://github.com/benjylxwang/church-offering/commit/d51d56cfbee063caf02334cd0472edb68f542efc))
+
 ## [1.0.1](https://github.com/benjylxwang/church-offering/compare/v1.0.0...v1.0.1) (2024-03-03)
 
 
