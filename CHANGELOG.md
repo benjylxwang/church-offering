@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.3](https://github.com/benjylxwang/church-offering/compare/v1.0.2...v1.0.3) (2024-04-11)
+
+
+### Bug Fixes
+
+* no currency symbol in output ([9ab7f5f](https://github.com/benjylxwang/church-offering/commit/9ab7f5f6aff80d5d69d527a0487f2e9af31ea416))
+
 ## [1.0.2](https://github.com/benjylxwang/church-offering/compare/v1.0.1...v1.0.2) (2024-03-03)
 
 
