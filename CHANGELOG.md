@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/benjylxwang/church-offering/compare/v1.0.3...v1.1.0) (2024-05-02)
+
+
+### Features
+
+* remove all pound signs ([cfb67b1](https://github.com/benjylxwang/church-offering/commit/cfb67b1f792627373b83b9169a96599eff0d99c0))
+
 ## [1.0.3](https://github.com/benjylxwang/church-offering/compare/v1.0.2...v1.0.3) (2024-04-11)
 
 
